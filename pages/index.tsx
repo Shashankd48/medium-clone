@@ -1,3 +1,4 @@
+import Banner from "../components/Banner";
 import Page from "../components/Page";
 
 export default function Home() {
@@ -5,7 +6,9 @@ export default function Home() {
       <div>
          <Page title="Medium Blog" />
 
-         <h1>Hello there</h1>
+         <main>
+            <Banner />
+         </main>
       </div>
    );
 }

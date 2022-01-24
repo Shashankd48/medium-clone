@@ -9,7 +9,7 @@ export const Layouts = (props: LayoutsProps) => {
    return (
       <div>
          <Header />
-         {props.children}
+         <div className="max-w-6xl mx-auto">{props.children}</div>
       </div>
    );
 };
