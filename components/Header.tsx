@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Header = () => {
    return (
-      <header className="flex justify-between py-3 sm:py-5 sm:pl-2 sm:pr-4 px-1 pr-2 max-w-6xl mx-auto border-b">
+      <header className="flex justify-between py-3 sm:py-5 sm:pl-2 sm:pr-4 px-1 pr-2 max-w-6xl mx-auto border-b sticky top-0 z-50 bg-white">
          <div className="flex items-center space-x-5">
             <Link href="/">
                <div className="w-32 relative h-full cursor-pointer">

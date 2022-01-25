@@ -33,10 +33,17 @@ export const getServerSideProps = async () => {
       },
       slug,
       mainImage,
-      description
+      description,
+      publishedAt
     } `;
 
-   const posts = await sanityClient.fetch(query);
+   let posts = [];
+   try {
+      posts = await sanityClient.fetch(query);
+   } catch (error) {
+      console.log(error);
+      posts = [];
+   }
 
    return { props: { posts } };
 };
