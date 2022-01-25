@@ -23,19 +23,20 @@ export default function Home({ posts }: HomeProps) {
       </div>
    );
 }
+
 export const getServerSideProps = async () => {
    const query = `*[_type == 'post']{
-      _id,
-      title,
-      author -> {
-        name,
-        image
-      },
-      slug,
-      mainImage,
-      description,
-      publishedAt
-    } `;
+         _id,
+         title,
+         author -> {
+         name,
+         image
+         },
+         slug,
+         mainImage,
+         description,
+         publishedAt
+      }`;
 
    let posts = [];
    try {

@@ -5,7 +5,12 @@ const PageNotFound = () => {
    return (
       <main className="flex flex-col justify-center items-center h-[83vh]">
          <div className="w-[95%] h-[120px] sm:w-[65%] sm:h-[150px] lg:w-[55%] lg:h-[150px] relative">
-            <Image src="/medium-logo.png" alt="medium-logo" layout="fill" />
+            <Image
+               src="/medium-logo.png"
+               alt="medium-logo"
+               layout="fill"
+               priority={true}
+            />
          </div>
 
          <h1 className="mt-4 text-4xl font-bold">
