@@ -62,11 +62,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       slug: params?.slug,
    });
 
-   if (!post) {
+   console.log(post);
+
+   if (!post || Object.keys(post).length === 0) {
+      console.log("log: ", post);
       return {
          notFound: true,
       };
    }
+
+   console.log("notFound");
 
    return {
       props: {

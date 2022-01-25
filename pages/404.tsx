@@ -15,7 +15,7 @@ const PageNotFound = () => {
 
          <h1 className="mt-4 text-4xl font-bold">
             {" "}
-            <span className=" text-blue-600">404</span> Page not found
+            <span className=" text-green-600">404</span> Page not found
          </h1>
          <Link href="/">
             <a className="bg-green-600 px-4 py-2 text-white rounded-md mt-6 active:opacity-80">
