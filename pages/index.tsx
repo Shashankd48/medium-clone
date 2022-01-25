@@ -1,14 +1,42 @@
 import Banner from "../components/Banner";
 import Page from "../components/Page";
+import PostFeed from "../components/PostFeed";
+import { sanityClient } from "../sanity";
+import { Post } from "../typings";
 
-export default function Home() {
+interface HomeProps {
+   posts: [Post];
+}
+
+export default function Home({ posts }: HomeProps) {
+   console.log(posts);
+
    return (
       <div>
          <Page title="Medium Blog" />
 
          <main>
             <Banner />
+
+            <PostFeed posts={posts} />
          </main>
       </div>
    );
 }
+export const getServerSideProps = async () => {
+   const query = `*[_type == 'post']{
+      _id,
+      title,
+      author -> {
+        name,
+        image
+      },
+      slug,
+      mainImage,
+      description
+    } `;
+
+   const posts = await sanityClient.fetch(query);
+
+   return { props: { posts } };
+};
