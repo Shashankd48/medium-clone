@@ -18,7 +18,7 @@ const Post = ({ post }: PostProps) => {
       <Fragment>
          <Page title="Post | Medium Blog" />
          <main>
-            <div className="h-80 w-full relative object-cover">
+            <div className="h-[200px] sm:h-[450px] w-full relative">
                <Image
                   src={urlFor(post.mainImage).url()!}
                   alt="banner-image"
@@ -75,7 +75,6 @@ const Post = ({ post }: PostProps) => {
                         li: ({ children }: any) => (
                            <li className="mt-3 px-2">{children}</li>
                         ),
-
                         link: ({ href, children }: any) => (
                            <a
                               href={href}
@@ -84,6 +83,11 @@ const Post = ({ post }: PostProps) => {
                            >
                               {children}
                            </a>
+                        ),
+                        img: (props: any) => (
+                           <div className="w-full h-full relative">
+                              <Image className="rounded-lg" {...props} />
+                           </div>
                         ),
                      }}
                   />
