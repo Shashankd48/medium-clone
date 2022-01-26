@@ -5,6 +5,7 @@ import Page from "../../components/Page";
 import { sanityClient, urlFor } from "../../sanity";
 import { Post } from "../../typings";
 import moment from "moment";
+import PortableText from "react-portable-text";
 
 interface PostProps {
    post: Post;
@@ -49,6 +50,44 @@ const Post = ({ post }: PostProps) => {
                      </p>
                   </div>
                </div>
+               <div className="mt-5">
+                  <PortableText
+                     dataset={process.env.NEXT_PUBLIC_SANITY_DATASET}
+                     projectId={process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}
+                     content={post.body}
+                     serializers={{
+                        h1: (props: any) => (
+                           <h1 className="text-3xl my-5" {...props} />
+                        ),
+                        h2: (props: any) => (
+                           <h2 className="text-xl font-bold my-5" {...props} />
+                        ),
+                        normal: (props: any) => (
+                           <p className="text-lg my-5" {...props} />
+                        ),
+                        ul: ({ children }: any) => (
+                           <div className="px-2 border rounded-lg">
+                              <ul className="list-disc text-lg px-8 py-3">
+                                 {children}
+                              </ul>
+                           </div>
+                        ),
+                        li: ({ children }: any) => (
+                           <li className="mt-3 px-2">{children}</li>
+                        ),
+
+                        link: ({ href, children }: any) => (
+                           <a
+                              href={href}
+                              className="text-blue-500 hover:underline"
+                              target="_blank"
+                           >
+                              {children}
+                           </a>
+                        ),
+                     }}
+                  />
+               </div>
             </article>
          </main>
       </Fragment>
@@ -90,7 +129,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         slug,
         mainImage,
         description,
-        publishedAt
+        publishedAt,
+        body
     }`;
 
    const post = await sanityClient.fetch(query, {
