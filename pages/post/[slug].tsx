@@ -8,6 +8,7 @@ import moment from "moment";
 import PortableText from "react-portable-text";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import Comments from "../../components/Comments";
 
 interface PostProps {
    post: Post;
@@ -217,6 +218,8 @@ const Post = ({ post }: PostProps) => {
                <hr className="my-5 border-top border-green-600" />
 
                {submitted ? CommentSubmission() : FormSection()}
+
+               <Comments comments={post.comments} />
             </div>
          </main>
       </Fragment>
@@ -255,6 +258,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         name,
         image
         },
+        'comments': *[
+         _type == 'comment' &&
+         post._ref == ^._id &&
+         approved == true
+       ],
         slug,
         mainImage,
         description,
@@ -278,7 +286,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       props: {
          post,
       },
-      revalidate: 60,
+      // revalidate: 60,
    };
 };
 
