@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /mediumclone/node_modules
+/mediumclone/dist
 
 /.pnp
 .pnp.js
