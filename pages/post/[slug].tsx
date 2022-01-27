@@ -1,12 +1,13 @@
 import { GetStaticProps } from "next";
 import Image from "next/image";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import Page from "../../components/Page";
 import { sanityClient, urlFor } from "../../sanity";
 import { Post } from "../../typings";
 import moment from "moment";
 import PortableText from "react-portable-text";
 import { useForm, SubmitHandler } from "react-hook-form";
+import axios from "axios";
 
 interface PostProps {
    post: Post;
@@ -25,15 +26,119 @@ const Post = ({ post }: PostProps) => {
       handleSubmit,
       formState: { errors },
    } = useForm<CommentFormInput>();
+   const [submitted, setSubmitted] = useState(false);
+   const [isSubmitting, setIsSubmitting] = useState(false);
 
    const onSubmit: SubmitHandler<CommentFormInput> = async (data) => {
-      console.log(data);
+      try {
+         setIsSubmitting(true);
+         const response = await axios.post("/api/createComment", { ...data });
+         setSubmitted(true);
+         console.log(response.data);
+      } catch (error) {
+         console.log(error);
+         setSubmitted(false);
+      }
+      setIsSubmitting(false);
+   };
+
+   const FormSection = () => {
+      return (
+         <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="p-5 flex flex-col max-w-2xl mx-auto"
+         >
+            <h3 className="text-base text-green-600 font-medium font-serif ">
+               Enjoyed this article?
+            </h3>
+            <h4 className="text-3xl font-medium">Leave a comment below!</h4>
+            <hr className="my-2 pb-5" />
+
+            <input
+               {...register("_id")}
+               type="hidden"
+               name="_id"
+               value={post._id}
+            />
+
+            <label htmlFor="name" className="block mb-5">
+               <span className="text-gray-700">Name</span>
+               <input
+                  {...register("name", { required: true })}
+                  type="text"
+                  placeholder="Tony Stark"
+                  className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-green-600 outline-none focus:ring-1"
+                  name="name"
+               />
+               {errors.name && (
+                  <span className="text-sm text-red-600 ml-2">
+                     Name required!
+                  </span>
+               )}
+            </label>
+
+            <label htmlFor="email" className="block mb-5">
+               <span className="text-gray-700">Email</span>
+               <input
+                  {...register("email", { required: true })}
+                  type="email"
+                  placeholder="tony98@gmail.com"
+                  className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-green-600 outline-none focus:ring-1"
+                  name="email"
+               />
+               {errors.email && (
+                  <span className="text-sm text-red-600 ml-2">
+                     Email required!
+                  </span>
+               )}
+            </label>
+
+            <label htmlFor="comment" className="block mb-5">
+               <span className="text-gray-700">Comment</span>
+               <textarea
+                  {...register("comment", {
+                     required: true,
+                     minLength: 10,
+                  })}
+                  placeholder="Write you comment..."
+                  rows={8}
+                  className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-green-600 outline-none focus:ring-1"
+                  name="comment"
+               />
+               {errors.comment && (
+                  <span className="text-sm text-red-600 ml-2">
+                     {errors.comment.type === "required"
+                        ? "Comment required!"
+                        : "To short!"}
+                  </span>
+               )}
+            </label>
+
+            <button
+               type="submit"
+               className="border-2 border-green-600 py-2 hover:bg-green-600 hover:text-white rounded active:opacity-75 font-medium transition-all ease-in duration-150 focus:outline-none"
+            >
+               {isSubmitting ? "Submitting..." : "Submit"}
+            </button>
+         </form>
+      );
+   };
+
+   const CommentSubmission = () => {
+      return (
+         <div className="flex flex-col p-10 bg-green-600 text-white  rounded">
+            <h3 className="text-2xl font-semibold">
+               Thank you for submitting your comment:
+            </h3>
+            <p>✅ Once it has been apporved, it will appear below!</p>
+         </div>
+      );
    };
 
    return (
       <Fragment>
          <Page title="Post | Medium Blog" />
-         <main>
+         <main className="pb-5">
             <div className="h-[200px] sm:h-[450px] w-full relative">
                <Image
                   src={urlFor(post.mainImage).url()!}
@@ -111,80 +216,7 @@ const Post = ({ post }: PostProps) => {
 
                <hr className="my-5 border-top border-green-600" />
 
-               <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="p-5 flex flex-col max-w-2xl mx-auto"
-               >
-                  <h3 className="text-base text-green-600 font-medium font-serif ">
-                     Enjoyed this article?
-                  </h3>
-                  <h4 className="text-3xl font-medium">
-                     Leave a comment below!
-                  </h4>
-                  <hr className="my-2 pb-5" />
-
-                  <input
-                     {...register("_id")}
-                     type="hidden"
-                     name="_id"
-                     value={post._id}
-                  />
-
-                  <label htmlFor="name" className="block mb-5">
-                     <span className="text-gray-700">Name</span>
-                     <input
-                        {...register("name", { required: true })}
-                        type="text"
-                        placeholder="Tony Stark"
-                        className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-green-600 outline-none focus:ring-1"
-                        name="name"
-                     />
-                     {errors.name && (
-                        <span className="text-sm text-red-600 ml-2">
-                           Name required!
-                        </span>
-                     )}
-                  </label>
-
-                  <label htmlFor="email" className="block mb-5">
-                     <span className="text-gray-700">Email</span>
-                     <input
-                        {...register("email", { required: true })}
-                        type="email"
-                        placeholder="tony98@gmail.com"
-                        className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-green-600 outline-none focus:ring-1"
-                        name="email"
-                     />
-                     {errors.email && (
-                        <span className="text-sm text-red-600 ml-2">
-                           Email required!
-                        </span>
-                     )}
-                  </label>
-
-                  <label htmlFor="comment" className="block mb-5">
-                     <span className="text-gray-700">Comment</span>
-                     <textarea
-                        {...register("comment", { required: true })}
-                        placeholder="Write you comment..."
-                        rows={8}
-                        className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-green-600 outline-none focus:ring-1"
-                        name="comment"
-                     />
-                     {errors.comment && (
-                        <span className="text-sm text-red-600 ml-2">
-                           Comment required!
-                        </span>
-                     )}
-                  </label>
-
-                  <button
-                     type="submit"
-                     className="border-2 border-green-600 py-2 hover:bg-green-600 hover:text-white rounded active:opacity-75 font-medium transition-all ease-in duration-150 focus:outline-none"
-                  >
-                     Submit
-                  </button>
-               </form>
+               {submitted ? CommentSubmission() : FormSection()}
             </div>
          </main>
       </Fragment>
@@ -246,7 +278,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       props: {
          post,
       },
-      // revalidate: 60,
+      revalidate: 60,
    };
 };
 
