@@ -2,10 +2,10 @@ import Banner from "../components/Banner";
 import Page from "../components/Page";
 import PostFeed from "../components/PostFeed";
 import { sanityClient } from "../sanity";
-import { Post } from "../typings";
+import { PostInterface } from "../typings";
 
 interface HomeProps {
-   posts: [Post];
+   posts: [PostInterface];
 }
 
 export default function Home({ posts }: HomeProps) {
