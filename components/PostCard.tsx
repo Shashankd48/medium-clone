@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { urlFor } from "../sanity";
-import { Post } from "../typings";
+import { PostInterface } from "../typings";
 import moment from "moment";
 
 interface PostCardProps {
-   post: Post;
+   post: PostInterface;
 }
 
 const PostCard = ({ post }: PostCardProps) => {

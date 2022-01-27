@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Fragment, useState } from "react";
 import Page from "../../components/Page";
 import { sanityClient, urlFor } from "../../sanity";
-import { Post } from "../../typings";
+import { PostInterface } from "../../typings";
 import moment from "moment";
 import PortableText from "react-portable-text";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -11,7 +11,7 @@ import axios from "axios";
 import Comments from "../../components/Comments";
 
 interface PostProps {
-   post: Post;
+   post: PostInterface;
 }
 
 interface CommentFormInput {
@@ -239,7 +239,7 @@ export const getStaticPaths = async () => {
    try {
       posts = await sanityClient.fetch(query);
 
-      const paths = posts.map((post: Post) => ({
+      const paths = posts.map((post: PostInterface) => ({
          params: {
             slug: post.slug.current,
          },

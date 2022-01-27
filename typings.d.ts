@@ -1,4 +1,4 @@
-export interface Post {
+export interface PostInterface {
    _id: string;
    title: string;
    publishedAt: string;
@@ -20,10 +20,10 @@ export interface Post {
       current: string;
    };
    body: [object];
-   comments: [Comment];
+   comments: [CommentInterface];
 }
 
-export interface Comment {
+export interface CommentInterface {
    approved: boolean;
    comment: string;
    email: string;
