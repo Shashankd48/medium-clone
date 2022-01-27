@@ -1,8 +1,8 @@
-import { Post } from "../typings";
+import { PostInterface } from "../typings";
 import PostCard from "./PostCard";
 
 interface PostFeedProps {
-   posts: [Post];
+   posts: [PostInterface];
 }
 
 const PostFeed = ({ posts }: PostFeedProps) => {
