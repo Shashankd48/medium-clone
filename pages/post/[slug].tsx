@@ -24,7 +24,7 @@ const Post = ({ post }: PostProps) => {
       register,
       handleSubmit,
       formState: { errors },
-   } = useForm();
+   } = useForm<CommentFormInput>();
 
    const onSubmit: SubmitHandler<CommentFormInput> = async (data) => {
       console.log(data);
@@ -155,6 +155,11 @@ const Post = ({ post }: PostProps) => {
                         className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-green-600 outline-none focus:ring-1"
                         name="email"
                      />
+                     {errors.email && (
+                        <span className="text-sm text-red-600 ml-2">
+                           Email required!
+                        </span>
+                     )}
                   </label>
 
                   <label htmlFor="comment" className="block mb-5">
@@ -166,6 +171,11 @@ const Post = ({ post }: PostProps) => {
                         className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-green-600 outline-none focus:ring-1"
                         name="comment"
                      />
+                     {errors.comment && (
+                        <span className="text-sm text-red-600 ml-2">
+                           Comment required!
+                        </span>
+                     )}
                   </label>
 
                   <button
